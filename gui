@@ -82,8 +82,6 @@ end)()
 
 
 
-local Library = {}
-
 function Library:NewWindow(name)
 	local Window = Instance.new("ImageLabel")
 	local Topbar = Instance.new("Frame")
@@ -1534,3 +1532,34 @@ function Library:NewWindow(name)
 	return Sections
 end
 
+
+
+plr = game:GetService("Players").LocalPlayer
+
+
+
+
+
+local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
+
+local tween
+function toTarget(pos, targetPos, targetCFrame)
+	local tween_s = game:service"TweenService"
+	local info = TweenInfo.new((targetPos - pos).Magnitude/100, Enum.EasingStyle.Quad)
+	local tic_k = tick()
+	local tween, err = pcall(function()
+		tween = tween_s:Create(game.Players.LocalPlayer.Character["HumanoidRootPart"], info, {CFrame = targetCFrame})
+		tween:Play()
+	end)
+	if not tween then return err end
+end
+
+local af = false
+local w = Library:NewWindow("Ro-Ghoul")
+local main = w:NewSection("Main")
+main:CreateToggle("Auto Farm",function(bool)
+	af = bool
+	if bool == false and tween ~= nil then
+		tween:Pause()
+	end
+end)
